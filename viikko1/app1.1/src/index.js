@@ -11,35 +11,45 @@ const Osa = (props) => {
 
 const Sisalto = (props) => {
     return props.parts.reduce((acc, cur) => {
-        const [part, taskcount] = cur;
-        return [...acc, 
-            <Osa part={part} taskcount={taskcount}/>
-    ]}, [])
+        return [...acc,
+            <Osa part={cur.nimi} taskcount={cur.tehtavia} />
+        ]
+    }, [])
 }
 
 const Yhteensa = (props) => {
-    return props.taskcounts.reduce((acc, cur) => acc + cur)
+    return props.parts.reduce((acc, cur) => acc + cur.tehtavia, 0)
 }
 
 const App = () => {
-    const kurssi = 'Half Stack -sovelluskehitys'
-    const osa1 = 'Reactin perusteet'
-    const tehtavia1 = 10
-    const osa2 = 'Tiedonvälitys propseilla'
-    const tehtavia2 = 7
-    const osa3 = 'Komponenttien tila'
-    const tehtavia3 = 14
+    const kurssi = {
+        nimi: 'Half Stack -sovelluskehitys',
+        osat: [
+            {
+                nimi: 'Reactin perusteet',
+                tehtavia: 10
+            },
+            {
+                nimi: 'Tiedonvälitys propseilla',
+                tehtavia: 7
+            },
+            {
+                nimi: 'Komponenttien tila',
+                tehtavia: 14
+            }
+        ]
+    }
 
     return (
         <div>
-            <Otsikko title={kurssi} />
-            <Sisalto parts={[[osa1, tehtavia1], [osa2, tehtavia2], [osa3, tehtavia3]]}/>
-            <Yhteensa taskcounts={[tehtavia1, tehtavia2, tehtavia3]}/>
-      </div>
+            <Otsikko title={kurssi.nimi} />
+            <Sisalto parts={kurssi.osat} />
+            <Yhteensa parts={kurssi.osat} />
+        </div>
     )
 }
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+    <App />,
+    document.getElementById('root')
 )
