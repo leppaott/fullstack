@@ -1,0 +1,25 @@
+kayttaja->selain:
+note left of selain
+kayttaja menee osoitteeseen 
+https://fullstack-exampleapp.herokuapp.com/spa
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa
+note left of palvelin
+  muodostetaan HTML missä listataan muistiinpanot
+end note
+palvelin->selain: status 304, sivun HTML-koodi
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, css-tyylitiedosto
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/spa.js
+palvelin->selain: status 200, js-tiedosto
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, muistiinpanot datana
+
+note left of selain
+ selain näyttää palvelimen palauttaman HTML:n
+ johon on upotettu palvelimelta haettu data
+end note

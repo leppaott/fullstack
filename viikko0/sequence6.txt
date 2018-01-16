@@ -1,0 +1,14 @@
+kayttaja->selain:
+note left of selain
+kayttaja kirjottaa tekstikenttään ja painaa nappia
+end note
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note left of palvelin
+  lähetetään tekstikentän data eli muistiinpanon sisältö 
+  ja aikaleima palvelimelle
+end note
+palvelin->selain: status 201
+
+note left of selain
+ js dynaamisesti muuttaa sivua uudella muistiinpanolla
+end note
