@@ -21,7 +21,34 @@ class App extends React.Component {
   }
 
   getCountries = () => {
-    if (this.state.find.length === 0) return 'try searching'
+    const countries = this.state.countries
+      .filter(country => country.name.toLowerCase()
+        .startsWith(this.state.find.toLowerCase()))
+
+    const notSearching = () => !this.state.find.length && 'try searching'
+    const tooManyResults = () => countries.length > 10 && 'too many matches, specify another filter'
+    const nothingFound = () => !countries.length && 'couldn\'t find anything'
+
+    const focus = (e, find) => [e.preventDefault(), this.setState({ find })]
+
+    const manyResults = () => 
+      countries.length > 1 &&
+        countries.map(country =>
+          <div onClick={(e) => focus(e, country.name)} key={country.name}>
+            {country.name}
+          </div>)
+
+    const oneResult = (country) =>
+      <div key={country.name}>
+        <h1>{country.name}</h1>
+        <div>capital: {country.capital}</div>
+        <div>population: {country.population}</div>
+        <div><img src={country.flag} alt='flag' height='100' /></div>
+      </div>
+
+    return notSearching() || tooManyResults() || nothingFound() || manyResults() || oneResult(countries[0])
+
+   /*if (this.state.find.length === 0) return 'try searching'
 
     const countries = this.state.countries
       .filter(country => country.name.toLowerCase()
@@ -45,7 +72,7 @@ class App extends React.Component {
         <div>capital: {country.capital}</div>
         <div>population: {country.population}</div>
         <div><img src={country.flag} alt='flag' height='100' /></div>
-      </div>)(countries[0])
+      </div>)(countries[0]) */
   }
 
   render() {
