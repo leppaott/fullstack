@@ -30,21 +30,25 @@ class App extends React.Component {
       .then(persons => this.setState({ persons }))
   }
 
+  updatePhone = (person) => {
+    const updated = { ...person, number: this.state.newNumber }
+    personService.update(updated)
+      .catch(() => personService.create(updated))
+
+    this.setState({
+      newName: '', newNumber: '',
+      persons: this.state.persons.map(p => p.id !== updated.id ? p : updated),
+      error: 'Muutettiin numeroa'
+    })
+  }
+
   addPerson = (e) => {
     e.preventDefault()
     const existing = this.state.persons.find(p => p.name === this.state.newName)
     if (existing && 
         window.confirm(existing.name + ' on jo luettelossa, korvataanko vanha numero uudella?')) {
-      const updated = { ...existing, number: this.state.newNumber }
-      personService.update(updated)
-         .catch(() => personService.create(updated))
-
-      this.setState({
-        newName: '', newNumber: '',
-        persons: this.state.persons.map(p => p.id !== updated.id ? p : updated),
-        error: 'Muutettiin numeroa'
-      })
-      return
+      
+      return this.updatePhone(existing)
     }
 
     const newPerson = {
