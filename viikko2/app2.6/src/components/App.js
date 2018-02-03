@@ -57,6 +57,10 @@ class App extends React.Component {
       id: this.state.newName
     }
 
+    if (!newPerson.name.length || !newPerson.number.length) {
+      return
+    }
+
     this.setState((prevState) => ({
       persons: [
         ...prevState.persons,
