@@ -43,8 +43,6 @@ let persons = [{
 
 persons.forEach(p => new Person(p).save())
 
-persons.forEach(p => new Person(p).save())
-
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   Person.findOne({ id })
