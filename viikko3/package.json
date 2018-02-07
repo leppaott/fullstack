@@ -1,15 +1,17 @@
 {
   "name": "puhelinluettelo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "watch": "./node_modules/.bin/nodemon index.js"
+    "watch": "./node_modules/.bin/nodemon index.js",
+    "lint": "node_modules/.bin/eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^4.17.0",
     "nodemon": "^1.14.12"
   },
   "dependencies": {

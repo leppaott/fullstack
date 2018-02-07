@@ -1,5 +1,9 @@
 import axios from 'axios'
-const baseUrl = '/api/persons' //'http://localhost:3001/api/persons'
+
+if (process.env.NODE_ENV !== 'production')
+    require('dotenv').config()
+
+const baseUrl = process.env.MONGODB_URI || '/api/persons/'
 
 const toData = response => response.data
 
@@ -12,11 +16,11 @@ const create = (newObject) => {
 }
 
 const update = (object) => {
-    return axios.put(`${baseUrl}/${object.id}`, object).then(toData)
+    return axios.put(`${baseUrl}${object.id}`, object).then(toData)
 }
 
 const remove = (object) => {
-    return axios.delete(`${baseUrl}/${object.id}`).then(toData)
+    return axios.delete(`${baseUrl}${object.id}`).then(toData)
 }
 
 

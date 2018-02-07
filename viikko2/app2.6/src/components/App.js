@@ -28,12 +28,13 @@ class App extends React.Component {
   componentWillMount() {
     personService.getAll()
       .then(persons => this.setState({ persons }))
+      .catch(err => console.log)
   }
 
   updatePhone = (person) => {
     const updated = { ...person, number: this.state.newNumber }
     personService.update(updated)
-      .catch(() => personService.create(updated))
+      .catch(() => personService.create(updated).catch(err => console.log))
 
     this.setState({
       newName: '', newNumber: '',
@@ -77,6 +78,7 @@ class App extends React.Component {
             p.id !== newPerson.name ? p : personWithId),
           error: 'Lisättiin ' + newPerson.name 
         }))
+      .catch(err => console.log)
   }
 
   handleChange = (property) => (e) => {
