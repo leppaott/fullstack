@@ -1,9 +1,6 @@
 import axios from 'axios'
 
-if (process.env.NODE_ENV !== 'production')
-    require('dotenv').config()
-
-const baseUrl = process.env.MONGODB_URI || '/api/persons/'
+const baseUrl = '/api/persons/'
 
 const toData = response => response.data
 
