@@ -20,14 +20,15 @@ blogsRouter.post('/', async (req, res) => {
       id = decodedToken.id
     }
 
+    const user = await User.findById(id)
+
     const obj = {
       title: req.body.title,
       author: req.body.author || "",
       url: req.body.url,
       likes: req.body.likes || 0,
-    }, user = await User.findById(id)
-
-    obj.user = user._id
+      user: user._id
+    }
 
     if (!obj.title || !obj.url || !id || !user)
       return res.status(400).end()
