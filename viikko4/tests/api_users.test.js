@@ -31,7 +31,7 @@ describe('api_users', () => {
 
     test('users can be added', async () => {
         const user = {
-            username: "username12",
+            username: "user",
             name: "name strong",
             adult: false,
             password: "pass"

@@ -3,13 +3,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "startprod": "NODE_ENV=token node index.js",
     "watch": "nodemon index.js",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "stop": "kill -7 $(lsof  -i:3003 | grep node | cut -d\" \" -f7)"
   },
   "devDependencies": {
     "dotenv": "^5.0.0",
     "jest": "^22.2.2",
-    "nodemon": "^1.14.12"
+    "nodemon": "^1.14.12",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",

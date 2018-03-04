@@ -12,8 +12,9 @@ blogsRouter.get('/', async (req, res) => {
 blogsRouter.post('/', async (req, res) => {
   try {
     let id = req.body.userId
-    if (process.env.NODE_ENV === 'production') {
-      const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    if (process.env.NODE_ENV === 'production'  || process.env.NODE_ENV === 'token') {
+      const token = req.get('Authorization').split(' ')[1]
+      const decodedToken = jwt.verify(token, process.env.SECRET)
 
       if (!token || !decodedToken.id)
         throw new Error('token missing or invalid')
@@ -45,14 +46,15 @@ blogsRouter.post('/', async (req, res) => {
 
 blogsRouter.delete('/:id', async (req, res) => {
   try {
-    if (process.env.NODE_ENV === 'production') {
-      const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'token') {
+      const token = req.get('Authorization').split(' ')[1]
+      const decodedToken = jwt.verify(token, process.env.SECRET)
 
       if (!token || !decodedToken.id)
         throw new Error('token missing or invalid')
 
-      const blog = Blog.findById(req.params.id)
-      if (blog.user.toString() !== decodedToken.id.toString()) 
+      const blog = await Blog.findById(req.params.id)
+      if (blog.user && blog.user.toString() !== decodedToken.id.toString()) 
         throw new Error('invalid token')
     }
     res.status(200).json(await Blog.findByIdAndRemove(req.params.id))
@@ -66,14 +68,16 @@ blogsRouter.put('/:id', async (req, res) => {
     title: req.body.title,
     author: req.body.author || "",
     url: req.body.url,
-    likes: req.body.likes || 0
+    likes: req.body.likes || 0,
+    user: req.body.user
   }
 
   if (!obj.title || !obj.url)
     return res.status(400).end()
 
   try {
-    res.status(200).json(await Blog.findByIdAndUpdate(req.params.id, obj, { new: true }))
+    const blog = await Blog.findByIdAndUpdate(req.params.id, obj, { new: true }).populate('user', { username: 1, name: 1, adult: 1 })
+    res.status(200).json(blog)
   } catch (e) {
     res.status(400).end()
   }
