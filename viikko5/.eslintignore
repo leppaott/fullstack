@@ -1,0 +1,5 @@
+redux-anecdotes/
+src/services/
+src/Redux/
+**/*.test.js
+

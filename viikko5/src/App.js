@@ -7,7 +7,7 @@ import Notification from './components/Notification'
 import BlogView from './components/BlogView'
 
 class App extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       blogs: [],
@@ -22,12 +22,13 @@ class App extends React.Component {
     blogService.getAll().then(blogs =>
       this.setState({ blogs: blogs.sort((a, b) => b.likes - a.likes), user: JSON.parse(localStorage.getItem('loggedInUser')) })
     ).then(na => {
-      if (this.state.user)
+      if (this.state.user) {
         blogService.setToken(this.state.user.token)
+      }
     }).catch(err => err)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.updateBlogs()
   }
 
@@ -50,11 +51,9 @@ class App extends React.Component {
       username: this.state.username,
       password: this.state.password
     }).then(user => {
-
       blogService.setToken(user.token)
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
       this.setState({ username: '', password: '', user })
-
     }).catch(exception => {
       this.doError('Username or password invalid')
     })
@@ -71,7 +70,7 @@ class App extends React.Component {
       .create(blog)
       .then(newBlog => {
         this.setState({
-          blogs: this.state.blogs.concat(newBlog),
+          blogs: this.state.blogs.concat(newBlog)
         })
         this.doError('a new blog ' + newBlog.title + ' by ' + newBlog.author + ' added')
       })
@@ -81,7 +80,7 @@ class App extends React.Component {
 
   focus = (blog) => {
     this.setState({ blogFocus: blog })
-  } 
+  }
 
   addLike = (blog) => {
     const { _id, user, ...rest } = blog
@@ -112,27 +111,31 @@ class App extends React.Component {
     }
   }
 
-  render() {
+  render () {
     let rendering = []
     const add = (el) => (rendering = rendering.concat(el))
 
-    if (this.state.error)
+    if (this.state.error) {
       add(<Notification message={this.state.error} />)
+    }
 
-    if (!this.state.user)
+    if (!this.state.user) {
       add(<LoginForm handleChange={this.handleLoginFieldChange} handleSubmit={this.login} username={this.state.username} password={this.state.password} />)
-    else
+    } else {
       add(<BlogList blogs={this.state.blogs} user={this.state.user} logOut={this.logOut} addBlog={this.addBlog} focus={this.focus} />)
-
+    }
     if (this.state.blogFocus) {
-      const blog = <BlogView blog={this.state.blogFocus} focus={this.focus} addLike={this.addLike} deleteBlog={this.deleteBlog} 
-                    isOwner={!this.state.blogFocus.user || this.state.blogFocus.user.username === this.state.user.username} />
-      if (this.state.error) rendering = [rendering[0], blog]
-      else rendering = blog
+      const blog = <BlogView blog={this.state.blogFocus} focus={this.focus} addLike={this.addLike} deleteBlog={this.deleteBlog}
+        isOwner={!this.state.blogFocus.user || this.state.blogFocus.user.username === this.state.user.username} />
+      if (this.state.error) {
+        rendering = [rendering[0], blog]
+      } else {
+        rendering = blog
+      }
     }
 
     return rendering
   }
 }
 
-export default App;
+export default App

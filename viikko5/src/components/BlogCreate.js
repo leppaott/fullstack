@@ -1,7 +1,7 @@
 import React from 'react'
 
 class BlogCreate extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.addBlog = props.addBlog
     this.state = {
@@ -21,7 +21,7 @@ class BlogCreate extends React.Component {
     const blog = {
       title: this.state.title,
       author: this.state.author,
-      url: this.state.url,
+      url: this.state.url
     }
 
     this.setState({ title: '', author: '', url: '' })
@@ -32,7 +32,7 @@ class BlogCreate extends React.Component {
     this.setState({ visible: !this.state.visible })
   }
 
-  render() {
+  render () {
     const visible = this.state.visible
     const showWhenVisible = { display: visible ? '' : 'none' }
 
